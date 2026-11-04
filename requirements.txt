@@ -1,0 +1,3 @@
+# Install with:
+# python -m pip install --pre --upgrade pydna
+pydna
