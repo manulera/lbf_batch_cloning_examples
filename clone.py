@@ -12,13 +12,22 @@ from pydna.primer import Primer
 FWD = Primer("ttggtggaagactaTATGgctaggagtcgtctggtg", name="oRMLB007_L0_part_recovery_BbsI_F-RM")
 RVS = Primer("cgataggaagaccaAAGActtcgcaaccacccgatag", name="oRMLB008_L0_part_recovery_BbsI_R-RM")
 
-vector = parse("sequences/pGCBA-Storage_v2_annotated.gb")[0]
+
+
+def read(path):
+    """Parse a GenBank file, keeping only the file name (no folders) in the sequence source."""
+    record = parse(path)[0]
+    record.source.file_name = os.path.basename(path)
+    return record
+
+
+vector = read("sequences/pGCBA-Storage_v2_annotated.gb")
 vector.name = "pGCBA-Storage_v2_annotated"
 
 os.makedirs("project1/output", exist_ok=True)
 
 for path in sorted(glob.glob("project1/input/sequences/*.gb")):
-    template = parse(path)[0]
+    template = read(path)
     template.name = os.path.basename(path).removesuffix(".gb")
     name = template.name.replace("pGGA-", "pGCBA_v2-")
 
